@@ -31,6 +31,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: 'rlig' 1, 'calt' 1;
@@ -64,6 +65,7 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -71,4 +73,213 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ============================================
+   STRANGER THINGS ADMIN THEME
+   ============================================ */
+
+/* Stranger Things Color Variables */
+:root {
+  --st-red: #e74c3c;
+  --st-dark-red: #c0392b;
+  --st-neon-red: #ff0040;
+  --st-black: #0a0a0a;
+  --st-dark-blue: #1a1a2e;
+  --st-glow: rgba(231, 76, 60, 0.5);
+  --st-glow-intense: rgba(255, 0, 64, 0.8);
+}
+
+/* Stranger Things Font */
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&display=swap');
+
+/* Flickering Neon Animation */
+@keyframes flicker {
+
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    text-shadow: 0 0 10px var(--st-glow),
+      0 0 20px var(--st-glow),
+      0 0 30px var(--st-glow),
+      0 0 40px var(--st-neon-red),
+      0 0 70px var(--st-neon-red),
+      0 0 80px var(--st-neon-red),
+      0 0 100px var(--st-neon-red);
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px var(--st-glow),
+      0 0 10px var(--st-glow),
+      0 0 15px var(--st-neon-red);
+  }
+
+  50% {
+    box-shadow: 0 0 10px var(--st-glow),
+      0 0 20px var(--st-glow),
+      0 0 30px var(--st-neon-red);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes static-noise {
+
+  0%,
+  100% {
+    opacity: 0.05;
+  }
+
+  50% {
+    opacity: 0.1;
+  }
+}
+
+/* Stranger Things Admin Container */
+.stranger-things-theme {
+  background: linear-gradient(180deg, var(--st-black) 0%, var(--st-dark-blue) 100%);
+  position: relative;
+  min-height: 100vh;
+}
+
+/* VHS Scanline Effect */
+.stranger-things-theme::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Animated Scanline */
+.stranger-things-theme::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to bottom,
+      transparent,
+      rgba(231, 76, 60, 0.5),
+      transparent);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Flickering Neon Title */
+.st-neon-title {
+  font-family: 'Creepster', 'Special Elite', monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--st-neon-red);
+  letter-spacing: 0.15em;
+  animation: flicker 3s infinite;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 10;
+}
+
+/* Glowing Text */
+.st-glow-text {
+  color: var(--st-red);
+  text-shadow: 0 0 5px var(--st-glow),
+    0 0 10px var(--st-glow),
+    0 0 15px var(--st-neon-red);
+}
+
+/* Glowing Button */
+.st-glow-button {
+  background: transparent;
+  border: 2px solid var(--st-neon-red);
+  color: var(--st-neon-red);
+  padding: 0.75rem 1.5rem;
+  font-family: 'Special Elite', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  animation: glow-pulse 2s infinite;
+}
+
+.st-glow-button:hover {
+  background: var(--st-neon-red);
+  color: var(--st-black);
+  box-shadow: 0 0 20px var(--st-glow-intense),
+    0 0 40px var(--st-glow-intense);
+}
+
+/* Glowing Card */
+.st-card {
+  background: rgba(26, 26, 46, 0.8);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  box-shadow: 0 0 10px rgba(231, 76, 60, 0.2);
+  transition: all 0.3s ease;
+}
+
+.st-card:hover {
+  border-color: var(--st-neon-red);
+  box-shadow: 0 0 20px var(--st-glow);
+}
+
+/* Retro Input */
+.st-input {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid var(--st-red);
+  color: var(--st-neon-red);
+  font-family: 'Special Elite', monospace;
+  padding: 0.75rem;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.st-input:focus {
+  outline: none;
+  border-color: var(--st-neon-red);
+  box-shadow: 0 0 10px var(--st-glow),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Static Noise Background */
+.st-static {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  animation: static-noise 0.2s infinite;
 }
