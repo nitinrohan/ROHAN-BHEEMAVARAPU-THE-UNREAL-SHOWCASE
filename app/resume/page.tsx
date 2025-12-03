@@ -85,14 +85,14 @@ export default async function ResumePage() {
                                             )}
                                             {exp.highlights && exp.highlights.length > 0 && (
                                                 <ul className="mb-3 list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                                                    {exp.highlights.map((highlight, idx) => (
+                                                    {exp.highlights.map((highlight: string, idx: number) => (
                                                         <li key={idx}>{highlight}</li>
                                                     ))}
                                                 </ul>
                                             )}
                                             {exp.technologies && exp.technologies.length > 0 && (
                                                 <div className="flex flex-wrap gap-2">
-                                                    {exp.technologies.map((tech) => (
+                                                    {exp.technologies.map((tech: string) => (
                                                         <Badge key={tech} variant="secondary" className="text-xs">
                                                             {tech}
                                                         </Badge>
@@ -157,7 +157,7 @@ export default async function ResumePage() {
                                             <h3 className="mb-2 font-semibold">{skill.title}</h3>
                                             {skill.technologies && (
                                                 <div className="flex flex-wrap gap-2">
-                                                    {skill.technologies.map((tech) => (
+                                                    {skill.technologies.map((tech: string) => (
                                                         <Badge key={tech} variant="outline" className="text-xs">
                                                             {tech}
                                                         </Badge>
