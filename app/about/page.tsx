@@ -40,7 +40,7 @@ export default async function AboutPage() {
                         {/* Text */}
                         <div>
                             <h1 className="mb-6 text-5xl font-bold md:text-6xl">
-                                Hi, I'm Rohan
+                                Hi, I&apos;m Rohan
                             </h1>
                             <div className="prose prose-lg dark:prose-invert">
                                 <p className="text-xl text-muted-foreground">
