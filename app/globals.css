@@ -408,6 +408,58 @@
 }
 
 /* Stranger Things Gate Opening Animation */
+.demogorgon-button {
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.demogorgon-button:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 30px rgba(255, 0, 64, 0.6));
+}
+
+.demogorgon-face {
+  transition: all 0.3s;
+  filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.8));
+}
+
+.demogorgon-button:hover .demogorgon-face {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 0 40px rgba(255, 0, 0, 1));
+}
+
+.demogorgon-jump {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: demoJump 1.5s ease-out forwards;
+}
+
+@keyframes demoJump {
+  0% {
+    transform: scale(1) translateY(0) rotateY(0deg);
+    opacity: 1;
+  }
+
+  30% {
+    transform: scale(1.1) translateY(-20px) rotateY(180deg);
+  }
+
+  70% {
+    transform: scale(3) translateY(0) rotateY(360deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(8) translateY(100px) rotateY(360deg);
+    opacity: 0;
+  }
+}
+
 .gate-start-button {
   padding: 3rem;
   background: rgba(255, 0, 64, 0.1);

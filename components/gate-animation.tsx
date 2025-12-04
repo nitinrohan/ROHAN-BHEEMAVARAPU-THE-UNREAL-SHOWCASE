@@ -4,25 +4,32 @@ import { useState, useEffect } from 'react';
 
 export function GateAnimation({ onComplete }: { onComplete: () => void }) {
     const [started, setStarted] = useState(false);
+    const [jumping, setJumping] = useState(false);
     const [cracking, setCracking] = useState(false);
     const [opening, setOpening] = useState(false);
 
     useEffect(() => {
         if (started) {
-            // Start cracking effect
-            setCracking(true);
+            // Demogorgon jumps
+            setJumping(true);
+
+            // Start cracking after jump
+            const crackTimer = setTimeout(() => {
+                setCracking(true);
+            }, 1500);
 
             // After cracks spread, open the gate
             const openTimer = setTimeout(() => {
                 setOpening(true);
-            }, 2000);
+            }, 3500);
 
             // Complete animation
             const completeTimer = setTimeout(() => {
                 onComplete();
-            }, 4000);
+            }, 5500);
 
             return () => {
+                clearTimeout(crackTimer);
                 clearTimeout(openTimer);
                 clearTimeout(completeTimer);
             };
@@ -36,19 +43,30 @@ export function GateAnimation({ onComplete }: { onComplete: () => void }) {
             {!started ? (
                 <button
                     onClick={() => setStarted(true)}
-                    className="gate-start-button animate-pulse"
+                    className="demogorgon-button group relative"
                 >
                     <div className="text-center">
-                        <div className="mb-4 text-6xl">🔴</div>
-                        <p className="text-2xl font-bold text-red-500">ENTER THE UPSIDE DOWN</p>
-                        <p className="mt-2 text-sm text-red-400/70">Click to open the gate</p>
+                        <div className="demogorgon-face mb-8 text-9xl">
+                            👹
+                        </div>
+                        <p className="animate-pulse text-2xl font-bold text-red-500">
+                            CLICK TO ENTER THE UPSIDE DOWN
+                        </p>
                     </div>
                 </button>
             ) : (
-                <div className="gate-container">
-                    {/* Cracks overlay */}
-                    {cracking && (
-                        <>
+                <>
+                    {jumping && (
+                        <div className="demogorgon-jump">
+                            <div className="text-9xl">
+                                👹
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="gate-container">
+                        {/* Cracks overlay */}
+                        {cracking && (
                             <svg className="gate-cracks" viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <path
                                     className="crack crack-1"
@@ -100,16 +118,16 @@ export function GateAnimation({ onComplete }: { onComplete: () => void }) {
                                     fill="none"
                                 />
                             </svg>
-                        </>
-                    )}
+                        )}
 
-                    {/* Gate halves */}
-                    <div className={`gate-left ${opening ? 'opening' : ''}`} />
-                    <div className={`gate-right ${opening ? 'opening' : ''}`} />
+                        {/* Gate halves */}
+                        <div className={`gate-left ${opening ? 'opening' : ''}`} />
+                        <div className={`gate-right ${opening ? 'opening' : ''}`} />
 
-                    {/* Center glow */}
-                    <div className={`gate-glow ${cracking ? 'pulsing' : ''}`} />
-                </div>
+                        {/* Center glow */}
+                        <div className={`gate-glow ${cracking ? 'pulsing' : ''}`} />
+                    </div>
+                </>
             )}
         </div>
     );
