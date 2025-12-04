@@ -16,14 +16,31 @@ export default function AboutPage() {
         setShowGate(false);
         setPageVisible(true);
 
-        // Start music when gate completes
-        if (audioRef.current && !audioStarted) {
-            audioRef.current.volume = 0.3; // Set volume to 30%
-            audioRef.current.play().catch((error) => {
-                console.log('Audio play failed:', error);
-            });
-            setAudioStarted(true);
-        }
+        // Start music when gate completes with a slight delay
+        setTimeout(() => {
+            if (audioRef.current && !audioStarted) {
+                audioRef.current.volume = 0.4; // Set volume to 40%
+                const playPromise = audioRef.current.play();
+
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            console.log('Music started playing');
+                            setAudioStarted(true);
+                        })
+                        .catch((error) => {
+                            console.log('Audio play failed:', error);
+                            // Try again on next user interaction
+                            document.addEventListener('click', () => {
+                                if (audioRef.current && !audioStarted) {
+                                    audioRef.current.play();
+                                    setAudioStarted(true);
+                                }
+                            }, { once: true });
+                        });
+                }
+            }
+        }, 500);
     };
 
     return (
@@ -36,8 +53,10 @@ export default function AboutPage() {
                     ref={audioRef}
                     loop
                     className="hidden"
+                    preload="auto"
                 >
-                    <source src="https://cdn.pixabay.com/download/audio/2022/05/13/audio_1808fbf07a.mp3" type="audio/mpeg" />
+                    <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg" />
+                    <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_4deaca7d52.mp3" type="audio/mpeg" />
                 </audio>
 
                 {/* Background Image */}
