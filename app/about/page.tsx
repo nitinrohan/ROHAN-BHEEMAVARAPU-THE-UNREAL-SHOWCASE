@@ -9,20 +9,21 @@ import { GateAnimation } from '@/components/gate-animation';
 export default function AboutPage() {
     const [showGate, setShowGate] = useState(true);
     const [pageVisible, setPageVisible] = useState(false);
+    const [audioStarted, setAudioStarted] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
-
-    useEffect(() => {
-        // Play audio after gate animation
-        if (!showGate && audioRef.current) {
-            audioRef.current.play().catch(() => {
-                console.log('Autoplay blocked');
-            });
-        }
-    }, [showGate]);
 
     const handleGateComplete = () => {
         setShowGate(false);
         setPageVisible(true);
+
+        // Start music when gate completes
+        if (audioRef.current && !audioStarted) {
+            audioRef.current.volume = 0.3; // Set volume to 30%
+            audioRef.current.play().catch((error) => {
+                console.log('Audio play failed:', error);
+            });
+            setAudioStarted(true);
+        }
     };
 
     return (
