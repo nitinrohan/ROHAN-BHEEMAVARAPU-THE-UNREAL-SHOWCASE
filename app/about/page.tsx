@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
+import { Github, Linkedin, Mail, Instagram, Youtube } from 'lucide-react';
 import { createServerClient } from '@/lib/supabase/server';
 import { Badge } from '@/components/ui/badge';
 import { StrangerThingsHeader } from '@/components/admin/stranger-things-header';
@@ -32,12 +32,25 @@ export default async function AboutPage() {
         .limit(5);
 
     return (
-        <div className="stranger-things-theme min-h-screen">
+        <div className="stranger-things-theme relative min-h-screen overflow-hidden">
+            {/* Background Image */}
+            <div className="fixed inset-0 z-0">
+                <Image
+                    src="/upside_down_background.png"
+                    alt="Background"
+                    fill
+                    className="object-cover opacity-20"
+                    priority
+                />
+            </div>
+
             {/* Static noise effect */}
             <div className="st-static" />
 
             {/* Header with particles */}
-            <StrangerThingsHeader />
+            <div className="relative z-10">
+                <StrangerThingsHeader />
+            </div>
 
             {/* Main Content */}
             <div className="container relative z-10 mx-auto px-4 py-12">
@@ -49,48 +62,54 @@ export default async function AboutPage() {
                             <h1 className="st-neon-title mb-6 text-4xl md:text-5xl">
                                 ROHAN BHEEMAVARAPU
                             </h1>
-                            <div className="mb-6">
+                            <div className="mb-8">
                                 <p className="st-glow-text font-mono text-lg">
                                     {bioSection?.content ||
                                         "A passionate developer, designer, and creator building amazing experiences on the web."}
                                 </p>
                             </div>
 
-                            {/* Social Links */}
+                            {/* Social Links with Flickering Effect */}
                             <div className="flex gap-4">
                                 <a
-                                    href="https://github.com"
+                                    href="https://github.com/nitinrohan"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="st-glow-button flex h-10 w-10 items-center justify-center rounded"
+                                    className="st-glow-button flex h-14 w-14 items-center justify-center rounded transition-all hover:scale-110"
                                     title="GitHub"
+                                    style={{ animation: 'flicker 3s infinite' }}
                                 >
-                                    <Github className="h-5 w-5" />
+                                    <Github className="h-7 w-7" />
                                 </a>
                                 <a
-                                    href="https://linkedin.com"
+                                    href="https://www.linkedin.com/in/rohan-bheemavarapu"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="st-glow-button flex h-10 w-10 items-center justify-center rounded"
+                                    className="st-glow-button flex h-14 w-14 items-center justify-center rounded transition-all hover:scale-110"
                                     title="LinkedIn"
+                                    style={{ animation: 'flicker 3.2s infinite' }}
                                 >
-                                    <Linkedin className="h-5 w-5" />
+                                    <Linkedin className="h-7 w-7" />
                                 </a>
                                 <a
-                                    href="https://twitter.com"
+                                    href="https://www.instagram.com/unreal_imagination04"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="st-glow-button flex h-10 w-10 items-center justify-center rounded"
-                                    title="Twitter"
+                                    className="st-glow-button flex h-14 w-14 items-center justify-center rounded transition-all hover:scale-110"
+                                    title="Instagram"
+                                    style={{ animation: 'flicker 2.8s infinite' }}
                                 >
-                                    <Twitter className="h-5 w-5" />
+                                    <Instagram className="h-7 w-7" />
                                 </a>
                                 <a
-                                    href="mailto:hello@example.com"
-                                    className="st-glow-button flex h-10 w-10 items-center justify-center rounded"
-                                    title="Email"
+                                    href="https://youtube.com/@unreal-journey04"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="st-glow-button flex h-14 w-14 items-center justify-center rounded transition-all hover:scale-110"
+                                    title="YouTube"
+                                    style={{ animation: 'flicker 3.5s infinite' }}
                                 >
-                                    <Mail className="h-5 w-5" />
+                                    <Youtube className="h-7 w-7" />
                                 </a>
                             </div>
                         </div>
