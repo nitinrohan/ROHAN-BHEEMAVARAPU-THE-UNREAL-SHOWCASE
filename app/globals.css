@@ -436,26 +436,59 @@
   align-items: center;
   justify-content: center;
   z-index: 100;
-  animation: demoJump 1.5s ease-out forwards;
+  animation: demoPounce 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
 
-@keyframes demoJump {
+@keyframes demoPounce {
+
+  /* Initial position */
   0% {
-    transform: scale(1) translateY(0) rotateY(0deg);
+    transform: scale(1) translateY(0) rotateX(0deg) scaleY(1);
+    filter: brightness(1);
+  }
+
+  /* Crouch down - preparing to pounce */
+  15% {
+    transform: scale(1.1) translateY(30px) rotateX(5deg) scaleY(0.85);
+    filter: brightness(1.2);
+  }
+
+  /* Muscle tension - body compresses */
+  25% {
+    transform: scale(1.15) translateY(40px) rotateX(8deg) scaleY(0.75) scaleX(1.1);
+    filter: brightness(1.3) contrast(1.2);
+  }
+
+  /* Launch! - explode upward and forward */
+  35% {
+    transform: scale(1.4) translateY(-30px) rotateX(-10deg) scaleY(1.2) scaleX(0.9);
+    filter: brightness(1.5) contrast(1.3);
+  }
+
+  /* Mid-air charge - on all fours */
+  50% {
+    transform: scale(2.2) translateY(-10px) translateZ(100px) rotateX(-5deg) scaleY(1.1);
+    filter: brightness(1.4) blur(0.5px);
+  }
+
+  /* Accelerating toward camera */
+  65% {
+    transform: scale(3.5) translateY(20px) translateZ(200px) rotateX(0deg) scaleY(1.05);
+    filter: brightness(1.6) blur(1px);
     opacity: 1;
   }
 
-  30% {
-    transform: scale(1.1) translateY(-20px) rotateY(180deg);
+  /* Final lunge - fills entire screen */
+  85% {
+    transform: scale(6) translateY(50px) translateZ(300px) rotateX(3deg) scaleY(1);
+    filter: brightness(2) blur(2px);
+    opacity: 0.9;
   }
 
-  70% {
-    transform: scale(3) translateY(0) rotateY(360deg);
-    opacity: 1;
-  }
-
+  /* Impact and fade */
   100% {
-    transform: scale(8) translateY(100px) rotateY(360deg);
+    transform: scale(10) translateY(100px) translateZ(400px) rotateX(5deg);
+    filter: brightness(3) blur(4px);
     opacity: 0;
   }
 }
