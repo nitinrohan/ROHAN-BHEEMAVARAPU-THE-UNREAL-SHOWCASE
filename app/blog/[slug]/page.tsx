@@ -50,16 +50,18 @@ export default async function BlogPost({ params }: Props) {
                 <div className="container mx-auto max-w-4xl px-4">
                     <Link
                         href="/blog"
-                        className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
                     >
                         <ArrowLeft className="h-4 w-4" />
                         Back to Blog
                     </Link>
 
                     {blog.featured && (
-                        <Badge variant="default" className="mb-4">
-                            ⭐ Featured
-                        </Badge>
+                        <div className="mb-6">
+                            <Badge variant="default">
+                                ⭐ Featured
+                            </Badge>
+                        </div>
                     )}
 
                     <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl">
