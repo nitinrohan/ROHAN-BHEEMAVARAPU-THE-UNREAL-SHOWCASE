@@ -79,7 +79,7 @@ export default async function AboutPage() {
                                     title="GitHub"
                                     style={{ animation: 'flicker 3s infinite' }}
                                 >
-                                    <Github className="h-7 w-7" />
+                                    <Github className="h-7 w-7 text-red-500" strokeWidth={2.5} />
                                 </a>
                                 <a
                                     href="https://www.linkedin.com/in/rohan-bheemavarapu"
@@ -89,7 +89,7 @@ export default async function AboutPage() {
                                     title="LinkedIn"
                                     style={{ animation: 'flicker 3.2s infinite' }}
                                 >
-                                    <Linkedin className="h-7 w-7" />
+                                    <Linkedin className="h-7 w-7 text-red-500" strokeWidth={2.5} fill="currentColor" />
                                 </a>
                                 <a
                                     href="https://www.instagram.com/unreal_imagination04"
@@ -99,7 +99,7 @@ export default async function AboutPage() {
                                     title="Instagram"
                                     style={{ animation: 'flicker 2.8s infinite' }}
                                 >
-                                    <Instagram className="h-7 w-7" />
+                                    <Instagram className="h-7 w-7 text-red-500" strokeWidth={2.5} />
                                 </a>
                                 <a
                                     href="https://youtube.com/@unreal-journey04"
@@ -109,7 +109,7 @@ export default async function AboutPage() {
                                     title="YouTube"
                                     style={{ animation: 'flicker 3.5s infinite' }}
                                 >
-                                    <Youtube className="h-7 w-7" />
+                                    <Youtube className="h-7 w-7 text-red-500" strokeWidth={2.5} fill="currentColor" />
                                 </a>
                             </div>
                         </div>
