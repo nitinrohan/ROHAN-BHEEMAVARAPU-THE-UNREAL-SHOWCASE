@@ -10,6 +10,8 @@ export default function AboutPage() {
     const [showGate, setShowGate] = useState(true);
     const [pageVisible, setPageVisible] = useState(false);
     const [audioStarted, setAudioStarted] = useState(false);
+    const [showControls, setShowControls] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
 
     const handleGateComplete = () => {
@@ -20,6 +22,7 @@ export default function AboutPage() {
         setTimeout(() => {
             if (audioRef.current && !audioStarted) {
                 audioRef.current.volume = 0.4; // Set volume to 40%
+                audioRef.current.currentTime = 3; // Start at 3 seconds
                 const playPromise = audioRef.current.play();
 
                 if (playPromise !== undefined) {
@@ -27,14 +30,22 @@ export default function AboutPage() {
                         .then(() => {
                             console.log('Music started playing');
                             setAudioStarted(true);
+                            setIsPlaying(true);
+
+                            // Show controls after 15 seconds
+                            setTimeout(() => {
+                                setShowControls(true);
+                            }, 15000);
                         })
                         .catch((error) => {
                             console.log('Audio play failed:', error);
                             // Try again on next user interaction
                             document.addEventListener('click', () => {
                                 if (audioRef.current && !audioStarted) {
+                                    audioRef.current.currentTime = 3;
                                     audioRef.current.play();
                                     setAudioStarted(true);
+                                    setIsPlaying(true);
                                 }
                             }, { once: true });
                         });
@@ -43,9 +54,55 @@ export default function AboutPage() {
         }, 500);
     };
 
+    const toggleAudio = () => {
+        if (audioRef.current) {
+            if (isPlaying) {
+                audioRef.current.pause();
+                setIsPlaying(false);
+            } else {
+                audioRef.current.play();
+                setIsPlaying(true);
+            }
+        }
+    };
+
+    // Stop music at 1 minute mark
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        const handleTimeUpdate = () => {
+            if (audio.currentTime >= 60) {
+                audio.currentTime = 3; // Loop back to 3 seconds
+            }
+        };
+
+        audio.addEventListener('timeupdate', handleTimeUpdate);
+        return () => audio.removeEventListener('timeupdate', handleTimeUpdate);
+    }, []);
+
     return (
         <>
             {showGate && <GateAnimation onComplete={handleGateComplete} />}
+
+            {/* Floating Music Control Button */}
+            {showControls && (
+                <button
+                    onClick={toggleAudio}
+                    className="fixed bottom-8 right-8 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-red-600/90 shadow-lg transition-all hover:scale-110 hover:bg-red-600 hover:shadow-red-600/50"
+                    title={isPlaying ? 'Pause Music' : 'Play Music'}
+                >
+                    {isPlaying ? (
+                        <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                        </svg>
+                    ) : (
+                        <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                    )}
+                </button>
+            )}
 
             <div className={`stranger-things-theme relative min-h-screen overflow-hidden transition-opacity duration-1000 ${pageVisible ? 'opacity-100' : 'opacity-0'}`}>
                 {/* Background Music - Royalty Free Synth Wave */}
