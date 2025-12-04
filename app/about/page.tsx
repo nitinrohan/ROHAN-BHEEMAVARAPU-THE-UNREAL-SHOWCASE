@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { Github, Linkedin, Mail, Instagram, Youtube } from 'lucide-react';
+import { Github, Linkedin, Instagram, Youtube } from 'lucide-react';
 import { createServerClient } from '@/lib/supabase/server';
 import { Badge } from '@/components/ui/badge';
 import { StrangerThingsHeader } from '@/components/admin/stranger-things-header';
@@ -69,57 +69,61 @@ export default async function AboutPage() {
                                 </p>
                             </div>
 
-                            {/* Social Links with Flickering Effect */}
-                            <div className="flex gap-4">
+                            {/* Social Links with Flickering Effect - BIGGER ICONS */}
+                            <div className="flex flex-wrap gap-6">
                                 <a
                                     href="https://github.com/nitinrohan"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="st-glow-button flex h-14 w-14 items-center justify-center rounded transition-all hover:scale-110"
+                                    className="st-glow-button flex h-20 w-20 items-center justify-center rounded-lg transition-all hover:scale-110"
                                     title="GitHub"
                                     style={{ animation: 'flicker 3s infinite' }}
                                 >
-                                    <Github className="h-7 w-7 text-red-500" strokeWidth={2.5} />
+                                    <Github className="h-12 w-12 text-red-500" strokeWidth={3} />
                                 </a>
                                 <a
                                     href="https://www.linkedin.com/in/rohan-bheemavarapu"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="st-glow-button flex h-14 w-14 items-center justify-center rounded transition-all hover:scale-110"
+                                    className="st-glow-button flex h-20 w-20 items-center justify-center rounded-lg transition-all hover:scale-110"
                                     title="LinkedIn"
                                     style={{ animation: 'flicker 3.2s infinite' }}
                                 >
-                                    <Linkedin className="h-7 w-7 text-red-500" strokeWidth={2.5} fill="currentColor" />
+                                    <Linkedin className="h-12 w-12 text-red-500" strokeWidth={3} fill="currentColor" />
                                 </a>
                                 <a
                                     href="https://www.instagram.com/unreal_imagination04"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="st-glow-button flex h-14 w-14 items-center justify-center rounded transition-all hover:scale-110"
+                                    className="st-glow-button flex h-20 w-20 items-center justify-center rounded-lg transition-all hover:scale-110"
                                     title="Instagram"
                                     style={{ animation: 'flicker 2.8s infinite' }}
                                 >
-                                    <Instagram className="h-7 w-7 text-red-500" strokeWidth={2.5} />
+                                    <Instagram className="h-12 w-12 text-red-500" strokeWidth={3} />
                                 </a>
                                 <a
                                     href="https://youtube.com/@unreal-journey04"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="st-glow-button flex h-14 w-14 items-center justify-center rounded transition-all hover:scale-110"
+                                    className="st-glow-button flex h-20 w-20 items-center justify-center rounded-lg transition-all hover:scale-110"
                                     title="YouTube"
                                     style={{ animation: 'flicker 3.5s infinite' }}
                                 >
-                                    <Youtube className="h-7 w-7 text-red-500" strokeWidth={2.5} fill="currentColor" />
+                                    <Youtube className="h-12 w-12 text-red-500" strokeWidth={3} fill="currentColor" />
                                 </a>
                             </div>
                         </div>
 
-                        {/* Profile Image */}
+                        {/* Hellfire Club Profile Image */}
                         <div className="flex justify-center lg:justify-end">
-                            <div className="relative h-80 w-80 overflow-hidden rounded-full border-4 border-red-500/30 bg-gradient-to-br from-red-900/20 to-black shadow-[0_0_50px_rgba(231,76,60,0.3)]">
-                                <div className="flex h-full w-full items-center justify-center text-6xl font-bold text-red-500/50">
-                                    RB
-                                </div>
+                            <div className="relative h-80 w-80 overflow-hidden rounded-full border-4 border-red-500/30 shadow-[0_0_50px_rgba(231,76,60,0.5)]">
+                                <Image
+                                    src="/rohan-hellfire.png"
+                                    alt="Rohan Bheemavarapu - Hellfire Club"
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                />
                             </div>
                         </div>
                     </div>
