@@ -1,24 +1,20 @@
-import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Calendar, Clock, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { createServerClient } from '@/lib/supabase/server';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { BlogCard } from '@/components/blog/blog-card';
 
-export async function generateMetadata({
-    params,
-}: {
+type Props = {
     params: { slug: string };
-}): Promise<Metadata> {
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const supabase = await createServerClient();
     const { data: blog } = await supabase
         .from('blog_posts')
-        .select('*')
+        .select('title, excerpt')
         .eq('slug', params.slug)
-        .eq('published', true)
         .single();
 
     if (!blog) {
@@ -29,23 +25,13 @@ export async function generateMetadata({
 
     return {
         title: `${blog.title} — Rohan Bheemavarapu`,
-        description: blog.excerpt || blog.title,
-        openGraph: {
-            title: blog.title,
-            description: blog.excerpt || '',
-            images: blog.cover_image ? [blog.cover_image] : [],
-        },
+        description: blog.excerpt,
     };
 }
 
-export default async function BlogPostPage({
-    params,
-}: {
-    params: { slug: string };
-}) {
+export default async function BlogPost({ params }: Props) {
     const supabase = await createServerClient();
 
-    // Fetch the blog post
     const { data: blog } = await supabase
         .from('blog_posts')
         .select('*')
@@ -57,102 +43,67 @@ export default async function BlogPostPage({
         notFound();
     }
 
-    // Fetch related posts (same tags)
-    const { data: relatedPosts } = await supabase
-        .from('blog_posts')
-        .select('*')
-        .eq('published', true)
-        .neq('id', blog.id)
-        .overlaps('tags', blog.tags)
-        .limit(3);
-
     return (
         <div className="min-h-screen bg-background">
-            {/* Back Button */}
-            <div className="border-b border-border/40">
-                <div className="container mx-auto px-4 py-4">
-                    <Button variant="ghost" asChild>
-                        <Link href="/blog" className="flex items-center gap-2">
-                            <ArrowLeft className="h-4 w-4" />
-                            Back to Blog
-                        </Link>
-                    </Button>
-                </div>
-            </div>
+            {/* Header */}
+            <div className="border-b border-border/40 bg-gradient-to-b from-primary/5 to-background py-12">
+                <div className="container mx-auto max-w-4xl px-4">
+                    <Link
+                        href="/blog"
+                        className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                        Back to Blog
+                    </Link>
 
-            {/* Hero */}
-            {blog.cover_image && (
-                <div className="relative h-[400px] w-full">
-                    <Image
-                        src={blog.cover_image}
-                        alt={blog.title}
-                        fill
-                        className="object-cover"
-                        priority
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
-                </div>
-            )}
+                    {blog.featured && (
+                        <Badge variant="default" className="mb-4">
+                            ⭐ Featured
+                        </Badge>
+                    )}
 
-            {/* Content */}
-            <article className="container mx-auto px-4 py-12">
-                <div className="mx-auto max-w-3xl">
-                    {/* Tags */}
-                    <div className="mb-4 flex flex-wrap gap-2">
-                        {blog.tags.map((tag: string) => (
-                            <Badge key={tag} variant="secondary">
-                                {tag}
-                            </Badge>
-                        ))}
-                    </div>
+                    <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl">
+                        {blog.title}
+                    </h1>
 
-                    {/* Title */}
-                    <h1 className="mb-4 text-4xl font-bold md:text-5xl">{blog.title}</h1>
-
-                    {/* Meta */}
-                    <div className="mb-8 flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
+                    {/* Meta Info */}
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2">
                             <Calendar className="h-4 w-4" />
                             {new Date(blog.created_at).toLocaleDateString('en-US', {
                                 month: 'long',
                                 day: 'numeric',
                                 year: 'numeric',
                             })}
-                        </span>
+                        </div>
                         {blog.reading_time && (
-                            <span className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                                 <Clock className="h-4 w-4" />
                                 {blog.reading_time} min read
-                            </span>
+                            </div>
                         )}
                     </div>
 
-                    {/* Excerpt */}
-                    {blog.excerpt && (
-                        <p className="mb-8 text-xl text-muted-foreground">{blog.excerpt}</p>
-                    )}
-
-                    {/* Content */}
-                    <div
-                        className="prose prose-lg dark:prose-invert max-w-none"
-                        dangerouslySetInnerHTML={{ __html: blog.content || '' }}
-                    />
-                </div>
-            </article>
-
-            {/* Related Posts */}
-            {relatedPosts && relatedPosts.length > 0 && (
-                <section className="border-t border-border/40 bg-card/30 py-12">
-                    <div className="container mx-auto px-4">
-                        <h2 className="mb-8 text-3xl font-bold">Related Posts</h2>
-                        <div className="grid gap-6 md:grid-cols-3">
-                            {relatedPosts.map((post) => (
-                                <BlogCard key={post.id} blog={post} />
+                    {/* Tags */}
+                    {blog.tags && blog.tags.length > 0 && (
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            {blog.tags.map((tag: string) => (
+                                <Badge key={tag} variant="secondary">
+                                    {tag}
+                                </Badge>
                             ))}
                         </div>
-                    </div>
-                </section>
-            )}
+                    )}
+                </div>
+            </div>
+
+            {/* Blog Content with Beautiful Typography */}
+            <div className="container mx-auto max-w-4xl px-4 py-12">
+                <article
+                    className="blog-prose"
+                    dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
+            </div>
         </div>
     );
 }

@@ -283,3 +283,126 @@
   z-index: 0;
   animation: static-noise 0.2s infinite;
 }
+
+/* Notion-style blog cards */
+.notion-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.notion-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(var(--primary-rgb), 0.1),
+      transparent);
+  transition: left 0.5s;
+}
+
+.notion-card:hover::before {
+  left: 100%;
+}
+
+/* Beautiful Blog Typography */
+.blog-prose {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: hsl(var(--foreground));
+}
+
+.blog-prose p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.blog-prose p.lead {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.blog-prose p.highlight {
+  padding: 1.5rem;
+  background: hsl(var(--primary) / 0.1);
+  border-left: 4px solid hsl(var(--primary));
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+  font-size: 1.125rem;
+}
+
+.blog-prose h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+  color: hsl(var(--foreground));
+}
+
+.blog-prose h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+}
+
+.blog-prose ul,
+.blog-prose ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.blog-prose li {
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+
+.blog-prose strong {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.blog-prose em {
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+
+.blog-prose a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.blog-prose a:hover {
+  color: hsl(var(--primary) / 0.8);
+}
+
+.blog-prose code {
+  background: hsl(var(--muted));
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+  font-family: 'Courier New', monospace;
+}
+
+.blog-prose blockquote {
+  border-left: 4px solid hsl(var(--primary));
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+
+.blog-prose hr {
+  margin: 3rem 0;
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+}
