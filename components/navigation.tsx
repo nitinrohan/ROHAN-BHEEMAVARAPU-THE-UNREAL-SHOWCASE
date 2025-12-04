@@ -1,12 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Search, Heart, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function Navigation() {
     const [scrolled, setScrolled] = useState(false);
+    const pathname = usePathname();
+    const isHomePage = pathname === '/';
 
     useEffect(() => {
         const handleScroll = () => {
@@ -34,14 +37,17 @@ export function Navigation() {
                     </h1>
                 </Link>
 
-                {/* Navigation Links */}
+                {/* Navigation Links - Desktop */}
                 <div className="hidden items-center gap-6 md:flex">
-                    <Link
-                        href="/"
-                        className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                        Home
-                    </Link>
+                    {/* Only show Home link if NOT on home page */}
+                    {!isHomePage && (
+                        <Link
+                            href="/"
+                            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                            Home
+                        </Link>
+                    )}
                     <Link
                         href="/blog"
                         className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -49,28 +55,34 @@ export function Navigation() {
                         Blog
                     </Link>
                     <Link
-                        href="/about"
-                        className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                        About
-                    </Link>
-                    <Link
                         href="/resume"
                         className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                     >
                         Resume
                     </Link>
+                    <Link
+                        href="/about"
+                        className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                        title="About Me"
+                    >
+                        <User className="h-5 w-5" />
+                    </Link>
                 </div>
 
-                {/* Actions */}
-                <div className="flex items-center gap-4">
-                    <button className="text-muted-foreground transition-colors hover:text-foreground">
-                        <Search className="h-5 w-5" />
-                    </button>
-                    <Link href="/my-list" className="text-muted-foreground transition-colors hover:text-foreground">
-                        <Heart className="h-5 w-5" />
+                {/* Mobile Nav */}
+                <div className="flex items-center gap-4 md:hidden">
+                    {!isHomePage && (
+                        <Link href="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+                            Home
+                        </Link>
+                    )}
+                    <Link href="/blog" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+                        Blog
                     </Link>
-                    <Link href="/admin" className="text-muted-foreground transition-colors hover:text-foreground">
+                    <Link href="/resume" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+                        Resume
+                    </Link>
+                    <Link href="/about" className="text-muted-foreground transition-colors hover:text-foreground">
                         <User className="h-5 w-5" />
                     </Link>
                 </div>
