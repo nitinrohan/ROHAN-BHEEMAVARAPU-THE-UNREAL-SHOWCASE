@@ -56,41 +56,10 @@ export function Navigation() {
                         </h1>
                     </Link>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden items-center gap-6 md:flex">
-                        {!isHomePage && (
-                            <Link
-                                href="/"
-                                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                            >
-                                Home
-                            </Link>
-                        )}
-                        <Link
-                            href="/blog"
-                            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                        >
-                            Blog
-                        </Link>
-                        <Link
-                            href="/resume"
-                            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                        >
-                            Resume
-                        </Link>
-                        <Link
-                            href="/about"
-                            className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                            title="About Me"
-                        >
-                            <User className="h-5 w-5" />
-                        </Link>
-                    </div>
-
-                    {/* Mobile Hamburger Button */}
+                    {/* Hamburger Button - ALWAYS VISIBLE */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="flex items-center justify-center p-2 text-muted-foreground transition-colors hover:text-foreground md:hidden"
+                        className="flex items-center justify-center p-2 text-muted-foreground transition-colors hover:text-foreground"
                         aria-label="Toggle menu"
                     >
                         {mobileMenuOpen ? (
@@ -102,18 +71,18 @@ export function Navigation() {
                 </div>
             </nav>
 
-            {/* Mobile Menu Overlay */}
+            {/* Menu Overlay */}
             {mobileMenuOpen && (
                 <div
-                    className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden"
+                    className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm"
                     onClick={() => setMobileMenuOpen(false)}
                 />
             )}
 
-            {/* Mobile Menu Slide-in */}
+            {/* Menu Slide-in - WORKS ON ALL DEVICES */}
             <div
                 className={cn(
-                    'fixed right-0 top-16 z-40 h-[calc(100vh-4rem)] w-64 transform bg-background/95 backdrop-blur-sm border-l border-border/40 transition-transform duration-300 ease-in-out md:hidden',
+                    'fixed right-0 top-16 z-40 h-[calc(100vh-4rem)] w-64 transform bg-background border-l border-border/40 shadow-xl transition-transform duration-300 ease-in-out',
                     mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
                 )}
             >
