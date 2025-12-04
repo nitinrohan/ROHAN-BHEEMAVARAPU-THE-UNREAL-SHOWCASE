@@ -105,15 +105,14 @@ export default function AboutPage() {
             )}
 
             <div className={`stranger-things-theme relative min-h-screen overflow-hidden transition-opacity duration-1000 ${pageVisible ? 'opacity-100' : 'opacity-0'}`}>
-                {/* Background Music - Royalty Free Synth Wave */}
+                {/* Background Music - Stranger Things Theme Song */}
                 <audio
                     ref={audioRef}
                     loop
                     className="hidden"
                     preload="auto"
                 >
-                    <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg" />
-                    <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_4deaca7d52.mp3" type="audio/mpeg" />
+                    <source src="/stranger-things-theme.mp3" type="audio/mpeg" />
                 </audio>
 
                 {/* Background Image */}
