@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export function GateAnimation({ onComplete }: { onComplete: () => void }) {
     const [started, setStarted] = useState(false);
@@ -45,21 +46,31 @@ export function GateAnimation({ onComplete }: { onComplete: () => void }) {
                     onClick={() => setStarted(true)}
                     className="demogorgon-button group relative"
                 >
-                    <div className="text-center">
-                        <div className="demogorgon-face mb-8 text-9xl">
-                            👹
-                        </div>
-                        <p className="animate-pulse text-2xl font-bold text-red-500">
-                            CLICK TO ENTER THE UPSIDE DOWN
-                        </p>
+                    <div className="demogorgon-face relative h-96 w-96">
+                        <Image
+                            src="/demogorgon.png"
+                            alt="Demogorgon"
+                            fill
+                            className="object-contain"
+                            priority
+                        />
                     </div>
+                    <p className="mt-6 animate-pulse text-center text-2xl font-bold text-red-500">
+                        CLICK TO ENTER THE UPSIDE DOWN
+                    </p>
                 </button>
             ) : (
                 <>
                     {jumping && (
                         <div className="demogorgon-jump">
-                            <div className="text-9xl">
-                                👹
+                            <div className="relative h-96 w-96">
+                                <Image
+                                    src="/demogorgon.png"
+                                    alt="Demogorgon"
+                                    fill
+                                    className="object-contain"
+                                    priority
+                                />
                             </div>
                         </div>
                     )}
