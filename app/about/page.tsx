@@ -12,46 +12,40 @@ export default function AboutPage() {
     const [audioStarted, setAudioStarted] = useState(false);
     const [showControls, setShowControls] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [started, setStarted] = useState(false); // New state to track if the experience has started
     const audioRef = useRef<HTMLAudioElement>(null);
 
     const handleGateComplete = () => {
         setShowGate(false);
         setPageVisible(true);
+    };
 
-        // Start music when gate completes with a slight delay
-        setTimeout(() => {
-            if (audioRef.current && !audioStarted) {
-                audioRef.current.volume = 0.4; // Set volume to 40%
-                audioRef.current.currentTime = 3; // Start at 3 seconds
-                const playPromise = audioRef.current.play();
+    const handleDemogorgonClick = () => {
+        setStarted(true);
 
-                if (playPromise !== undefined) {
-                    playPromise
-                        .then(() => {
-                            console.log('Music started playing');
-                            setAudioStarted(true);
-                            setIsPlaying(true);
+        // Start music IMMEDIATELY on click for mobile compatibility
+        if (audioRef.current && !audioStarted) {
+            audioRef.current.volume = 0.4;
+            audioRef.current.currentTime = 3; // Start at 3 seconds
 
-                            // Show controls after 15 seconds
-                            setTimeout(() => {
-                                setShowControls(true);
-                            }, 15000);
-                        })
-                        .catch((error) => {
-                            console.log('Audio play failed:', error);
-                            // Try again on next user interaction
-                            document.addEventListener('click', () => {
-                                if (audioRef.current && !audioStarted) {
-                                    audioRef.current.currentTime = 3;
-                                    audioRef.current.play();
-                                    setAudioStarted(true);
-                                    setIsPlaying(true);
-                                }
-                            }, { once: true });
-                        });
-                }
-            }
-        }, 500);
+            // Play immediately - this works on mobile because it's in click handler
+            audioRef.current.play()
+                .then(() => {
+                    console.log('Music started playing');
+                    setAudioStarted(true);
+                    setIsPlaying(true);
+
+                    // Show controls after 15 seconds
+                    setTimeout(() => {
+                        setShowControls(true);
+                    }, 15000);
+                })
+                .catch((error) => {
+                    console.log('Audio play failed:', error);
+                    // Show controls immediately if autoplay fails
+                    setShowControls(true);
+                });
+        }
     };
 
     const toggleAudio = () => {
@@ -83,7 +77,7 @@ export default function AboutPage() {
 
     return (
         <>
-            {showGate && <GateAnimation onComplete={handleGateComplete} />}
+            {showGate && <GateAnimation onComplete={handleGateComplete} onDemogorgonClick={handleDemogorgonClick} />}
 
             {/* Floating Music Control Button */}
             {showControls && (

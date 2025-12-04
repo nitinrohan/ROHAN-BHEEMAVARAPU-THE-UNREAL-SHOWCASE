@@ -3,7 +3,13 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-export function GateAnimation({ onComplete }: { onComplete: () => void }) {
+export function GateAnimation({
+    onComplete,
+    onDemogorgonClick
+}: {
+    onComplete: () => void;
+    onDemogorgonClick?: () => void;
+}) {
     const [started, setStarted] = useState(false);
     const [jumping, setJumping] = useState(false);
     const [cracking, setCracking] = useState(false);
@@ -43,7 +49,10 @@ export function GateAnimation({ onComplete }: { onComplete: () => void }) {
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black">
             {!started ? (
                 <button
-                    onClick={() => setStarted(true)}
+                    onClick={() => {
+                        onDemogorgonClick?.();
+                        setStarted(true);
+                    }}
                     className="demogorgon-button group relative"
                 >
                     <div className="demogorgon-face relative h-96 w-96">
