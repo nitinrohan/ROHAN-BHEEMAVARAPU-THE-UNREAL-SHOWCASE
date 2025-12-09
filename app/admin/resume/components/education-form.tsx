@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { createClient } from '@/lib/supabase/client';
+import { createBrowserClient } from '@/lib/supabase/client';
 
 type EducationFormProps = {
     open: boolean;
@@ -17,7 +17,7 @@ type EducationFormProps = {
 
 export function EducationForm({ open, onOpenChange, onSuccess, item }: EducationFormProps) {
     const [loading, setLoading] = useState(false);
-    const supabase = createClient();
+    const supabase = createBrowserClient();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Plus, Pencil, Trash2, Briefcase, GraduationCap, Code } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
+import { createBrowserClient } from '@/lib/supabase/client';
 import { ExperienceForm } from './components/experience-form';
 import { EducationForm } from './components/education-form';
 import { SkillsForm } from './components/skills-form';
@@ -35,7 +35,7 @@ export default function ResumeAdminPage() {
     const [skillFormOpen, setSkillFormOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<ResumeItem | undefined>();
 
-    const supabase = createClient();
+    const supabase = createBrowserClient();
 
     useEffect(() => {
         fetchResumeData();

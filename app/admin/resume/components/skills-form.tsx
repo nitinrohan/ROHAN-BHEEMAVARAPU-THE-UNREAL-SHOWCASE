@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { createClient } from '@/lib/supabase/client';
+import { createBrowserClient } from '@/lib/supabase/client';
 import { X } from 'lucide-react';
 
 type SkillsFormProps = {
@@ -19,7 +19,7 @@ export function SkillsForm({ open, onOpenChange, onSuccess, item }: SkillsFormPr
     const [loading, setLoading] = useState(false);
     const [skills, setSkills] = useState<string[]>(item?.highlights || []);
     const [newSkill, setNewSkill] = useState('');
-    const supabase = createClient();
+    const supabase = createBrowserClient();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

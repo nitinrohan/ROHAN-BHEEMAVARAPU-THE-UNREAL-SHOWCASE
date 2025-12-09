@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { createClient } from '@/lib/supabase/client';
+import { createBrowserClient } from '@/lib/supabase/client';
 import { X } from 'lucide-react';
 
 type ExperienceFormProps = {
@@ -23,7 +23,7 @@ export function ExperienceForm({ open, onOpenChange, onSuccess, item }: Experien
     const [newTech, setNewTech] = useState('');
     const [highlights, setHighlights] = useState<string[]>(item?.highlights || []);
     const [newHighlight, setNewHighlight] = useState('');
-    const supabase = createClient();
+    const supabase = createBrowserClient();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
