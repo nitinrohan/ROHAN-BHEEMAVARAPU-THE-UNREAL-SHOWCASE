@@ -128,7 +128,7 @@ export default function ResumeAdminPage() {
                         {loading ? (
                             <p className="text-muted-foreground">Loading...</p>
                         ) : experiences.length === 0 ? (
-                            <p className="text-muted-foreground">No experience added yet. Click "Add Experience" to get started.</p>
+                            <p className="text-muted-foreground">No experience added yet. Click &quot;Add Experience&quot; to get started.</p>
                         ) : (
                             <div className="space-y-4">
                                 {experiences.map((exp) => (
@@ -185,7 +185,7 @@ export default function ResumeAdminPage() {
                         {loading ? (
                             <p className="text-muted-foreground">Loading...</p>
                         ) : education.length === 0 ? (
-                            <p className="text-muted-foreground">No education added yet. Click "Add Education" to get started.</p>
+                            <p className="text-muted-foreground">No education added yet. Click &quot;Add Education&quot; to get started.</p>
                         ) : (
                             <div className="space-y-4">
                                 {education.map((edu) => (
@@ -242,7 +242,7 @@ export default function ResumeAdminPage() {
                         {loading ? (
                             <p className="text-muted-foreground">Loading...</p>
                         ) : skills.length === 0 ? (
-                            <p className="text-muted-foreground">No skills added yet. Click "Add Skills" to get started.</p>
+                            <p className="text-muted-foreground">No skills added yet. Click &quot;Add Skills&quot; to get started.</p>
                         ) : (
                             <div className="space-y-4">
                                 {skills.map((skill) => (
