@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { createBrowserClient } from '@/lib/supabase/client';
 import { X } from 'lucide-react';
 
 type ExperienceFormProps = {
@@ -23,7 +22,6 @@ export function ExperienceForm({ open, onOpenChange, onSuccess, item }: Experien
     const [newTech, setNewTech] = useState('');
     const [highlights, setHighlights] = useState<string[]>(item?.highlights || []);
     const [newHighlight, setNewHighlight] = useState('');
-    const supabase = createBrowserClient();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,15 +41,27 @@ export function ExperienceForm({ open, onOpenChange, onSuccess, item }: Experien
             highlights,
         };
 
-        const { error } = item?.id
-            ? await supabase.from('resume_items').update(data).eq('id', item.id)
-            : await supabase.from('resume_items').insert([data]);
+        // Get password from sessionStorage
+        const password = sessionStorage.getItem('resume_password') || '';
+
+        const response = await fetch('/api/resume', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password,
+                action: item?.id ? 'update' : 'create',
+                id: item?.id,
+                data,
+            }),
+        });
 
         setLoading(false);
 
-        if (!error) {
+        if (response.ok) {
             onSuccess();
             onOpenChange(false);
+        } else {
+            alert('Failed to save. Please try again.');
         }
     };
 

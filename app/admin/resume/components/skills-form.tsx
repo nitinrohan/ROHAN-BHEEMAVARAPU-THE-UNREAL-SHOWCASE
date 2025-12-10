@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { createBrowserClient } from '@/lib/supabase/client';
 import { X } from 'lucide-react';
 
 type SkillsFormProps = {
@@ -19,7 +18,6 @@ export function SkillsForm({ open, onOpenChange, onSuccess, item }: SkillsFormPr
     const [loading, setLoading] = useState(false);
     const [skills, setSkills] = useState<string[]>(item?.highlights || []);
     const [newSkill, setNewSkill] = useState('');
-    const supabase = createBrowserClient();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -32,15 +30,26 @@ export function SkillsForm({ open, onOpenChange, onSuccess, item }: SkillsFormPr
             highlights: skills,
         };
 
-        const { error } = item?.id
-            ? await supabase.from('resume_items').update(data).eq('id', item.id)
-            : await supabase.from('resume_items').insert([data]);
+        const password = sessionStorage.getItem('resume_password') || '';
+
+        const response = await fetch('/api/resume', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password,
+                action: item?.id ? 'update' : 'create',
+                id: item?.id,
+                data,
+            }),
+        });
 
         setLoading(false);
 
-        if (!error) {
+        if (response.ok) {
             onSuccess();
             onOpenChange(false);
+        } else {
+            alert('Failed to save. Please try again.');
         }
     };
 

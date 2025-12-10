@@ -27,8 +27,9 @@ export function PasswordPrompt({ open, onOpenChange, onSuccess }: PasswordPrompt
         const correctPassword = process.env.NEXT_PUBLIC_RESUME_PASSWORD || 'admin123';
 
         if (password === correctPassword) {
-            // Store auth in sessionStorage (only for current tab session)
+            // Store auth and password in sessionStorage (only for current tab session)
             sessionStorage.setItem('resume_auth', 'true');
+            sessionStorage.setItem('resume_password', password);
             onSuccess();
             onOpenChange(false);
             setPassword('');

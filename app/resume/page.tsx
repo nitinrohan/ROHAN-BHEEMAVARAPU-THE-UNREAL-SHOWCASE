@@ -65,8 +65,24 @@ export default function ResumeClientPage() {
 
     const deleteItem = async (id: string) => {
         if (!confirm('Delete this item?')) return;
-        await supabase.from('resume_items').delete().eq('id', id);
-        fetchData();
+
+        const password = sessionStorage.getItem('resume_password') || '';
+
+        const response = await fetch('/api/resume', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password,
+                action: 'delete',
+                id,
+            }),
+        });
+
+        if (response.ok) {
+            fetchData();
+        } else {
+            alert('Failed to delete. Please try again.');
+        }
     };
 
     return (

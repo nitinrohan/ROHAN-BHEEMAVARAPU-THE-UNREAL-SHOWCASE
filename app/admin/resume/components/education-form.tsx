@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { createBrowserClient } from '@/lib/supabase/client';
 
 type EducationFormProps = {
     open: boolean;
@@ -17,7 +16,6 @@ type EducationFormProps = {
 
 export function EducationForm({ open, onOpenChange, onSuccess, item }: EducationFormProps) {
     const [loading, setLoading] = useState(false);
-    const supabase = createBrowserClient();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,15 +32,26 @@ export function EducationForm({ open, onOpenChange, onSuccess, item }: Education
             end_date: formData.get('end_date') as string,
         };
 
-        const { error } = item?.id
-            ? await supabase.from('resume_items').update(data).eq('id', item.id)
-            : await supabase.from('resume_items').insert([data]);
+        const password = sessionStorage.getItem('resume_password') || '';
+
+        const response = await fetch('/api/resume', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password,
+                action: item?.id ? 'update' : 'create',
+                id: item?.id,
+                data,
+            }),
+        });
 
         setLoading(false);
 
-        if (!error) {
+        if (response.ok) {
             onSuccess();
             onOpenChange(false);
+        } else {
+            alert('Failed to save. Please try again.');
         }
     };
 
