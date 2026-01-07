@@ -27,7 +27,7 @@ interface HeroProps {
 export function Hero({ project }: HeroProps) {
     if (!project) {
         return (
-            <div className="relative h-[80vh] w-full bg-gradient-to-b from-neutral-900 to-background">
+            <div className="relative h-[70vh] min-h-[500px] w-full bg-gradient-to-b from-neutral-900 to-background">
                 <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
