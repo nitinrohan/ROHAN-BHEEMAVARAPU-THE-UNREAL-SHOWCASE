@@ -38,7 +38,7 @@ export function CertificationsSection({ certifications }: CertificationsSectionP
                         </span>
                     </h2>
                     <p className="mt-2 text-lg text-muted-foreground">
-                        That's It For Now, Don't Have Any More Ideas Yet
+                        That&apos;s It For Now, Don&apos;t Have Any More Ideas Yet
                     </p>
                 </motion.div>
 
