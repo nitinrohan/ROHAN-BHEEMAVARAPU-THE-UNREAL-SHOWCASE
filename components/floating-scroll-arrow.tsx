@@ -34,7 +34,7 @@ export function FloatingScrollArrow() {
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.4 }}
                     onClick={scrollToProjects}
-                    className="fixed bottom-12 left-1/2 z-50 -translate-x-1/2 cursor-pointer"
+                    className="fixed bottom-32 left-1/2 z-50 -translate-x-1/2 cursor-pointer"
                     aria-label="Scroll to projects"
                 >
                     {/* Floating animation */}
