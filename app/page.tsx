@@ -1,6 +1,8 @@
 import { Navigation } from '@/components/navigation';
 import { Hero } from '@/components/hero';
-import { ProjectRow } from '@/components/project-row';
+import { FloatingScrollArrow } from '@/components/floating-scroll-arrow';
+import { Top10Projects } from '@/components/top-10-projects';
+import { CertificationsSection } from '@/components/certifications-section';
 import { createServerClient } from '@/lib/supabase/server';
 
 export default async function HomePage() {
@@ -16,42 +18,35 @@ export default async function HomePage() {
         .eq('published', true)
         .order('created_at', { ascending: false });
 
-    // Group projects by tech tags
+    // Fetch certifications
+    const { data: certifications } = await supabase
+        .from('certifications')
+        .select('*')
+        .order('display_order', { ascending: true });
+
     const featuredProjects = projects?.filter((p) => p.featured) || [];
-    const recentProjects = projects?.slice(0, 10) || [];
-
-    // Extract unique tech tags
-    const allTags = new Set<string>();
-    projects?.forEach((p) => {
-        p.tech_tags?.forEach((tag: string) => allTags.add(tag));
-    });
-
-    const projectsByTech: Record<string, any[]> = {};
-    allTags.forEach((tag) => {
-        projectsByTech[tag] = projects?.filter((p) => p.tech_tags?.includes(tag)) || [];
-    });
 
     return (
         <div className="min-h-screen">
             <Navigation />
+
+            {/* Hero Section */}
             <Hero project={featuredProjects[0]} />
 
-            <main className="relative z-10 -mt-32 space-y-12 pb-20">
-                {featuredProjects.length > 0 && (
-                    <ProjectRow title="Featured Projects" projects={featuredProjects} />
+            {/* Floating Scroll Arrow */}
+            <FloatingScrollArrow />
+
+            {/* Main Content */}
+            <main className="relative z-10 space-y-20 pb-20">
+                {/* Top 10 Projects Section */}
+                {projects && projects.length > 0 && (
+                    <Top10Projects projects={projects} />
                 )}
 
-                {recentProjects.length > 0 && (
-                    <ProjectRow title="Recent Work" projects={recentProjects} />
+                {/* Certifications Section */}
+                {certifications && certifications.length > 0 && (
+                    <CertificationsSection certifications={certifications} />
                 )}
-
-                {Object.entries(projectsByTech).map(([tag, tagProjects]) => (
-                    <ProjectRow
-                        key={tag}
-                        title={`Built with ${tag}`}
-                        projects={tagProjects}
-                    />
-                ))}
             </main>
         </div>
     );

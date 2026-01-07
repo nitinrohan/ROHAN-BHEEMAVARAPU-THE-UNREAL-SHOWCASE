@@ -647,3 +647,34 @@
     opacity: 0.8;
   }
 }
+
+/* ============================================
+   SMOOTH SCROLL & UTILITIES
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for horizontal carousels */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Snap scroll for horizontal carousels */
+.snap-x {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-center {
+  scroll-snap-align: center;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+}
