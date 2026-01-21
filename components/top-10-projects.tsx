@@ -1,8 +1,11 @@
 'use client';
 
-import { useRef } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Edit, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { PasswordPrompt } from '@/components/password-prompt';
 
 type Project = {
     id: string;
@@ -18,36 +21,95 @@ type Top10ProjectsProps = {
 };
 
 export function Top10Projects({ projects }: Top10ProjectsProps) {
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
 
     // Take only top 10 projects
     const top10 = projects.slice(0, 10);
 
+    const handleEditClick = () => {
+        if (isEditMode) {
+            // Already authenticated, just toggle off
+            setIsEditMode(false);
+            sessionStorage.removeItem('projects_auth');
+            sessionStorage.removeItem('projects_password');
+        } else {
+            // Show password prompt
+            setShowPasswordPrompt(true);
+        }
+    };
+
+    const handlePasswordSuccess = () => {
+        setIsEditMode(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Delete this project?')) return;
+
+        const password = sessionStorage.getItem('projects_password') || '';
+
+        const response = await fetch('/api/projects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password,
+                action: 'delete',
+                id,
+            }),
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('Failed to delete. Please try again.');
+        }
+    };
+
     return (
         <section id="projects-section" className="relative py-20">
             <div className="container mx-auto px-4">
-                {/* Section Title */}
+                {/* Section Title with Edit Button */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="mb-12"
+                    className="mb-12 flex items-center justify-between"
                 >
-                    <h2 className="text-4xl font-bold md:text-5xl">
-                        <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
-                            Top 10 Projects
-                        </span>
-                    </h2>
-                    <p className="mt-2 text-lg text-muted-foreground">
-                        I Have Been Working On
-                    </p>
+                    <div>
+                        <h2 className="text-4xl font-bold md:text-5xl">
+                            <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+                                Top 10 Projects
+                            </span>
+                        </h2>
+                        <p className="mt-2 text-lg text-muted-foreground">
+                            I Have Been Working On
+                        </p>
+                    </div>
+
+                    {/* Edit Button */}
+                    <Button
+                        onClick={handleEditClick}
+                        variant={isEditMode ? "destructive" : "outline"}
+                        className="flex items-center gap-2"
+                    >
+                        {isEditMode ? (
+                            <>
+                                <X className="h-4 w-4" />
+                                Exit Edit Mode
+                            </>
+                        ) : (
+                            <>
+                                <Edit className="h-4 w-4" />
+                                Edit Projects
+                            </>
+                        )}
+                    </Button>
                 </motion.div>
 
                 {/* Horizontal Scroll Container */}
                 <div className="relative -mx-4 md:mx-0">
                     <div
-                        ref={scrollContainerRef}
                         className="flex gap-6 overflow-x-auto px-4 pb-8 scrollbar-hide md:gap-8 md:px-0"
                         style={{
                             scrollSnapType: 'x mandatory',
@@ -59,6 +121,8 @@ export function Top10Projects({ projects }: Top10ProjectsProps) {
                                 key={project.id}
                                 project={project}
                                 rank={index + 1}
+                                isEditMode={isEditMode}
+                                onDelete={handleDelete}
                             />
                         ))}
                     </div>
@@ -69,11 +133,29 @@ export function Top10Projects({ projects }: Top10ProjectsProps) {
                     ← Swipe to explore →
                 </div>
             </div>
+
+            {/* Password Prompt */}
+            <PasswordPrompt
+                open={showPasswordPrompt}
+                onOpenChange={setShowPasswordPrompt}
+                onSuccess={handlePasswordSuccess}
+                storageKey="projects"
+            />
         </section>
     );
 }
 
-function ProjectCard({ project, rank }: { project: Project; rank: number }) {
+function ProjectCard({
+    project,
+    rank,
+    isEditMode,
+    onDelete
+}: {
+    project: Project;
+    rank: number;
+    isEditMode: boolean;
+    onDelete: (id: string) => void;
+}) {
     return (
         <motion.a
             href={`/projects/${project.slug}`}
@@ -162,6 +244,32 @@ function ProjectCard({ project, rank }: { project: Project; rank: number }) {
                             </Badge>
                         )}
                     </div>
+
+                    {/* Edit/Delete Buttons */}
+                    {isEditMode && (
+                        <div className="mt-4 flex gap-2">
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    window.location.href = `/admin/projects/${project.id}`;
+                                }}
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    onDelete(project.id);
+                                }}
+                            >
+                                Delete
+                            </Button>
+                        </div>
+                    )}
                 </div>
 
                 {/* Border Glow on Hover */}
