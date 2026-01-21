@@ -11,9 +11,10 @@ type PasswordPromptProps = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSuccess: () => void;
+    storageKey?: string; // Optional: 'resume' or 'projects', defaults to 'resume'
 };
 
-export function PasswordPrompt({ open, onOpenChange, onSuccess }: PasswordPromptProps) {
+export function PasswordPrompt({ open, onOpenChange, onSuccess, storageKey = 'resume' }: PasswordPromptProps) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -27,9 +28,9 @@ export function PasswordPrompt({ open, onOpenChange, onSuccess }: PasswordPrompt
         const correctPassword = process.env.NEXT_PUBLIC_RESUME_PASSWORD || 'admin123';
 
         if (password === correctPassword) {
-            // Store auth and password in sessionStorage (only for current tab session)
-            sessionStorage.setItem('resume_auth', 'true');
-            sessionStorage.setItem('resume_password', password);
+            // Store auth and password in sessionStorage with storage key prefix
+            sessionStorage.setItem(`${storageKey}_auth`, 'true');
+            sessionStorage.setItem(`${storageKey}_password`, password);
             onSuccess();
             onOpenChange(false);
             setPassword('');
